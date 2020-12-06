@@ -14,6 +14,6 @@ namespace terrible.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public bool Admin { get; set; }
-        public float Balance { get; set; }
+        public decimal Balance { get; set; }
     }
 }

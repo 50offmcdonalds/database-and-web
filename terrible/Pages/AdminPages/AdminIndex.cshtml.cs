@@ -16,14 +16,18 @@ namespace terrible.Pages.AdminPages
         public string Name;
         public const string SessionKeyName2 = "name";
 
+        public decimal Balance;
+        public const string SessionKeyName3 = "balance";
+
         public string SessionID;
-        public const string SessionKeyName3 = "sessionID";
+        public const string SessionKeyName4 = "sessionID";
         public IActionResult OnGet()
         {
 
             Username = HttpContext.Session.GetString(SessionKeyName1);
             Name = HttpContext.Session.GetString(SessionKeyName2);
-            SessionID = HttpContext.Session.GetString(SessionKeyName3);
+            Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName3)), 2);
+            SessionID = HttpContext.Session.GetString(SessionKeyName4);
 
             if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(SessionID))
             {

@@ -34,7 +34,7 @@ namespace terrible.Pages.Login
             using (SqlCommand command = new SqlCommand())
             {
                 command.Connection = conn;
-                command.CommandText = @"SELECT [Name], [Username], [Password], [Admin] FROM [User] WHERE [Username] = @Username AND [Password] = @Password";
+                command.CommandText = @"SELECT [Name], [Username], [Password], [Admin], [Balance] FROM [User] WHERE [Username] = @Username AND [Password] = @Password";
 
                 command.Parameters.AddWithValue("@Username", UserLogin.Username);
                 command.Parameters.AddWithValue("@Password", UserLogin.Password);
@@ -45,7 +45,7 @@ namespace terrible.Pages.Login
                     UserLogin.Username = reader.GetString(1);
                     UserLogin.Password = reader.GetString(2);
                     UserLogin.Admin = reader.GetBoolean(3);
-                    //UserLogin.Balance = reader.GetFloat(4);
+                    UserLogin.Balance = reader.GetDecimal(4);
                 }
             }
             if (!string.IsNullOrEmpty(UserLogin.Name))
@@ -54,6 +54,7 @@ namespace terrible.Pages.Login
                 HttpContext.Session.SetString("sessionID", SessionID);
                 HttpContext.Session.SetString("username", UserLogin.Username);
                 HttpContext.Session.SetString("name", UserLogin.Name);
+                HttpContext.Session.SetString("balance", UserLogin.Balance.ToString());
                 if (UserLogin.Admin == true)
                 {
                     return RedirectToPage("/AdminPages/AdminIndex");
