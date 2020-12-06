@@ -53,14 +53,14 @@ namespace terrible.Pages.Login
                 SessionID = HttpContext.Session.Id;
                 HttpContext.Session.SetString("sessionID", SessionID);
                 HttpContext.Session.SetString("username", UserLogin.Username);
-                HttpContext.Session.SetString("fname", UserLogin.Name);
+                HttpContext.Session.SetString("name", UserLogin.Name);
                 if (UserLogin.Admin == true)
                 {
                     return RedirectToPage("/AdminPages/AdminIndex");
                 }
                 else
                 {
-                    return RedirectToPage("/index");
+                    return RedirectToPage("/UserPages/UserIndex");
                 }
             }
             else

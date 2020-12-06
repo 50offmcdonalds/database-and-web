@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace terrible.Pages.UserPages
+namespace terrible.Pages.AdminPages
 {
-    public class UserIndexModel : PageModel
+    public class AdminIndexModel : PageModel
     {
         public string Username;
         public const string SessionKeyName1 = "username";
@@ -20,6 +20,7 @@ namespace terrible.Pages.UserPages
         public const string SessionKeyName3 = "sessionID";
         public IActionResult OnGet()
         {
+
             Username = HttpContext.Session.GetString(SessionKeyName1);
             Name = HttpContext.Session.GetString(SessionKeyName2);
             SessionID = HttpContext.Session.GetString(SessionKeyName3);
