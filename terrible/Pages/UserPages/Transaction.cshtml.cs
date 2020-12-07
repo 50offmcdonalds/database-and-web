@@ -75,8 +75,7 @@ namespace terrible.Pages.UserPages
                 
                 command.Connection = conn;
                 command.CommandText = @"UPDATE [User] SET [Balance] = [Balance] + @NewBalance WHERE [Id] = @TransferID;
-                                        UPDATE [User] SET [Balance] = [Balance] - @NewBalance WHERE [Id] = @SenderID;
-                                        INSERT INTO[Transactions] ([SenderID], [ReceiverID], [Amount]) VALUES(@SenderID, @TransferID, @NewBalance)";
+                                        UPDATE [User] SET [Balance] = [Balance] - @NewBalance WHERE [Id] = @SenderID";
 
                 command.Parameters.AddWithValue("@NewBalance", Transaction.TransferAmount);
                 command.Parameters.AddWithValue("@TransferID", Transaction.ReceiverID);
