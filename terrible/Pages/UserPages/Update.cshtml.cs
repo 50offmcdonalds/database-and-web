@@ -45,39 +45,40 @@ namespace terrible.Pages.UserPages
             return Page();
         }
 
-        public string getName()
-        {
-            string name = HttpContext.Session.GetString(SessionKeyName3);
-            return name;
-        }
+        //public string getName()
+        //{
+        //    string name = HttpContext.Session.GetString(SessionKeyName3);
+        //    return name;
+        //}
+
         public int getID()
         {
             int UID = HttpContext.Session.GetInt32(SessionKeyName1).Value;
             return UID;
         }
 
-        public string getPassword()
-        {
-            string password = "";
-            DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
-            string DbConnection = dbstring.DatabaseString(); //calling the method from the class
-            SqlConnection conn = new SqlConnection(DbConnection);
-            conn.Open();
+        //public string getPassword()
+        //{
+        //    string password = "";
+        //    DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
+        //    string DbConnection = dbstring.DatabaseString(); //calling the method from the class
+        //    SqlConnection conn = new SqlConnection(DbConnection);
+        //    conn.Open();
 
-            using (SqlCommand command = new SqlCommand())
-            {
-                command.Connection = conn;
-                command.CommandText = @"SELECT [Password] FROM [User] WHERE [Id] = @UserID";
-                command.Parameters.AddWithValue("@UserID", getID());
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    password = reader.GetString(0);
-                }
-            }
-            conn.Close();
-            return password;
-        }
+        //    using (SqlCommand command = new SqlCommand())
+        //    {
+        //        command.Connection = conn;
+        //        command.CommandText = @"SELECT [Password] FROM [User] WHERE [Id] = @UserID";
+        //        command.Parameters.AddWithValue("@UserID", getID());
+        //        var reader = command.ExecuteReader();
+        //        while (reader.Read())
+        //        {
+        //            password = reader.GetString(0);
+        //        }
+        //    }
+        //    conn.Close();
+        //    return password;
+        //}
 
         public IActionResult OnPost()
         {
@@ -85,12 +86,6 @@ namespace terrible.Pages.UserPages
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
             SqlConnection conn = new SqlConnection(DbConnection);
             conn.Open();
-
-            Console.WriteLine(UserDetails.Name);
-            Console.WriteLine(getName());
-
-            Console.WriteLine(UserDetails.Password);
-            Console.WriteLine(getPassword());
 
             using (SqlCommand command = new SqlCommand())
             {
