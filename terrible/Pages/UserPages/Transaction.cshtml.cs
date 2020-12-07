@@ -16,6 +16,8 @@ namespace terrible.Pages.UserPages
         [BindProperty]
         public Transaction Transaction { get; set; }
 
+        public string Message { get; set; }
+
         public int UserID;
         public const string SessionKeyName1 = "userID";
 
@@ -57,6 +59,11 @@ namespace terrible.Pages.UserPages
         }
         public IActionResult OnPost()
         {
+            if (getBalance() - Transaction.TransferAmount < 0)
+            {
+                Message = "Insufficient funds to make transfer";
+                return Page();
+            }
             Transaction.SenderID = getSenderID();
             DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
