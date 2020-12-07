@@ -9,6 +9,6 @@ namespace terrible.Models
     {
         public int SenderID { get; set; }
         public int ReceiverID { get; set; }
-        public int TransferAmount { get; set; }
+        public decimal TransferAmount { get; set; }
     }
 }
