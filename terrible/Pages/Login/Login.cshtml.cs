@@ -34,24 +34,26 @@ namespace terrible.Pages.Login
             using (SqlCommand command = new SqlCommand())
             {
                 command.Connection = conn;
-                command.CommandText = @"SELECT [Name], [Username], [Password], [Admin], [Balance] FROM [User] WHERE [Username] = @Username AND [Password] = @Password";
+                command.CommandText = @"SELECT [Id], [Name], [Username], [Password], [Admin], [Balance] FROM [User] WHERE [Username] = @Username AND [Password] = @Password";
 
                 command.Parameters.AddWithValue("@Username", UserLogin.Username);
                 command.Parameters.AddWithValue("@Password", UserLogin.Password);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    UserLogin.Name = reader.GetString(0);
-                    UserLogin.Username = reader.GetString(1);
-                    UserLogin.Password = reader.GetString(2);
-                    UserLogin.Admin = reader.GetBoolean(3);
-                    UserLogin.Balance = reader.GetDecimal(4);
+                    UserLogin.Id = reader.GetInt32(0);
+                    UserLogin.Name = reader.GetString(1);
+                    UserLogin.Username = reader.GetString(2);
+                    UserLogin.Password = reader.GetString(3);
+                    UserLogin.Admin = reader.GetBoolean(4);
+                    UserLogin.Balance = reader.GetDecimal(5);
                 }
             }
             if (!string.IsNullOrEmpty(UserLogin.Name))
             {
                 SessionID = HttpContext.Session.Id;
                 HttpContext.Session.SetString("sessionID", SessionID);
+                HttpContext.Session.SetInt32("userID", UserLogin.Id);
                 HttpContext.Session.SetString("username", UserLogin.Username);
                 HttpContext.Session.SetString("name", UserLogin.Name);
                 HttpContext.Session.SetString("balance", UserLogin.Balance.ToString());

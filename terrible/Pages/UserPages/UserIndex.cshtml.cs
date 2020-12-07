@@ -10,25 +10,30 @@ namespace terrible.Pages.UserPages
 {
     public class UserIndexModel : PageModel
     {
+        public int UserID;
+        public const string SessionKeyName1 = "userID";
+
         public string Username;
-        public const string SessionKeyName1 = "username";
+        public const string SessionKeyName2 = "username";
 
         public string Name;
-        public const string SessionKeyName2 = "name";
+        public const string SessionKeyName3 = "name";
 
         public decimal Balance;
-        public const string SessionKeyName3 = "balance";
+        public const string SessionKeyName4 = "balance";
 
         public string SessionID;
-        public const string SessionKeyName4 = "sessionID";
+        public const string SessionKeyName5 = "sessionID";
 
         
         public IActionResult OnGet()
         {
-            Username = HttpContext.Session.GetString(SessionKeyName1);
-            Name = HttpContext.Session.GetString(SessionKeyName2);
-            Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName3)),2);
-            SessionID = HttpContext.Session.GetString(SessionKeyName4);
+            UserID = HttpContext.Session.GetInt32(SessionKeyName1).Value;
+            Username = HttpContext.Session.GetString(SessionKeyName2);
+            Name = HttpContext.Session.GetString(SessionKeyName3);
+            Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName4)),2);
+            SessionID = HttpContext.Session.GetString(SessionKeyName5);
+
 
             if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(SessionID))
             {
@@ -36,5 +41,7 @@ namespace terrible.Pages.UserPages
             }
             return Page();
         }
+
+
     }
 }

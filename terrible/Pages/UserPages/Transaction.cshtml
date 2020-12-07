@@ -1,0 +1,25 @@
+﻿@page
+@model terrible.Pages.UserPages.TransactionModel
+@{
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <input type="hidden" asp-for="Transaction.SenderID" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Receiver ID</label>
+                <input type="text" asp-for="Transaction.ReceiverID" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" asp-for="Transaction.TransferAmount" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-dark" />
+            </div>
+        </form>
+    </div>
+</div>
