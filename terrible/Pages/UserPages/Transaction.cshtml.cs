@@ -16,6 +16,8 @@ namespace terrible.Pages.UserPages
         [BindProperty]
         public Transaction Transaction { get; set; }
 
+        public List<Transaction> TransactionHistory { get; set; }
+
         public string Message { get; set; }
 
         public int? UserID;
@@ -44,6 +46,17 @@ namespace terrible.Pages.UserPages
                 return RedirectToPage("/Login/Login");
             }
 
+            //get transaction history
+            //DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
+            //string DbConnection = dbstring.DatabaseString(); //calling the method from the class
+            //SqlConnection conn = new SqlConnection(DbConnection);
+            //conn.Open();
+            //using (SqlCommand command = new SqlCommand())
+            //{
+            //    command.Connection = conn;
+            //    //command.CommandText = @"SELECT ["
+            //}
+            //conn.Close();
             return Page();
         }
 
@@ -76,11 +89,12 @@ namespace terrible.Pages.UserPages
                 command.Connection = conn;
                 command.CommandText = @"UPDATE [User] SET [Balance] = [Balance] + @NewBalance WHERE [Id] = @TransferID;
                                         UPDATE [User] SET [Balance] = [Balance] - @NewBalance WHERE [Id] = @SenderID;
-                                        INSERT INTO[Transactions] ([SenderID], [ReceiverID], [Amount]) VALUES(@SenderID, @TransferID, @NewBalance)";
+                                        INSERT INTO[Transactions] ([SenderID], [ReceiverID], [Amount], [Date]) VALUES(@SenderID, @TransferID, @NewBalance, @Date)";
 
                 command.Parameters.AddWithValue("@NewBalance", Transaction.TransferAmount);
                 command.Parameters.AddWithValue("@TransferID", Transaction.ReceiverID);
                 command.Parameters.AddWithValue("@SenderID", Transaction.SenderID);
+                command.Parameters.AddWithValue("@Date", DateTime.Now);
 
                 Console.WriteLine(Transaction.TransferAmount);
                 Console.WriteLine(Transaction.ReceiverID);

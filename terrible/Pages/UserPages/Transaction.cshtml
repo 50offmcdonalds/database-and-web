@@ -3,8 +3,10 @@
 @{
 }
 
+<h1>Transactions</h1>
 <div class="row">
     <div class="col-md-4">
+        <h2>Make Transaction</h2>
         <form method="post">
             <div class="form-group">
                 <input type="hidden" asp-for="Transaction.SenderID" class="form-control"/>
@@ -21,6 +23,10 @@
                 <input type="submit" value="Transfer" class="btn btn-dark" />
             </div>
         </form>
+    </div>
+    <div class="col-md-8">
+        <h2>Transaction History</h2>
+
     </div>
     <div>
         <p style="color: #f00">@Model.Message</p>
