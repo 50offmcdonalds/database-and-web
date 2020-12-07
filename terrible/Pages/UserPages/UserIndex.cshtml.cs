@@ -10,7 +10,7 @@ namespace terrible.Pages.UserPages
 {
     public class UserIndexModel : PageModel
     {
-        public int UserID;
+        public int? UserID;
         public const string SessionKeyName1 = "userID";
 
         public string Username;
@@ -28,7 +28,7 @@ namespace terrible.Pages.UserPages
         
         public IActionResult OnGet()
         {
-            UserID = HttpContext.Session.GetInt32(SessionKeyName1).Value;
+            UserID = HttpContext.Session.GetInt32(SessionKeyName1);
             Username = HttpContext.Session.GetString(SessionKeyName2);
             Name = HttpContext.Session.GetString(SessionKeyName3);
             Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName4)),2);

@@ -16,7 +16,7 @@ namespace terrible.Pages.UserPages
         [BindProperty]
         public User UserDetails { get; set; }
 
-        public int UserID;
+        public int? UserID;
         public const string SessionKeyName1 = "userID";
 
         public string Username;
@@ -32,7 +32,7 @@ namespace terrible.Pages.UserPages
         public const string SessionKeyName5 = "sessionID";
         public IActionResult OnGet()
         {
-            UserID = HttpContext.Session.GetInt32(SessionKeyName1).Value;
+            UserID = HttpContext.Session.GetInt32(SessionKeyName1);
             Username = HttpContext.Session.GetString(SessionKeyName2);
             Name = HttpContext.Session.GetString(SessionKeyName3);
             Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName4)), 2);
@@ -96,12 +96,12 @@ namespace terrible.Pages.UserPages
             {
                 command.Connection = conn;
                 command.CommandText = @"";
-                if (UserDetails.Name != getName())
+                if (!string.IsNullOrWhiteSpace(UserDetails.Name))
                 {
                     command.CommandText += @"UPDATE [User] SET [Name] = @NewName WHERE [Id] = @UserID;";
                     command.Parameters.AddWithValue("@NewName", UserDetails.Name);
                 }
-                if (UserDetails.Password != getPassword())
+                if (!string.IsNullOrWhiteSpace(UserDetails.Password))
                 {
                     command.CommandText += @"UPDATE [User] SET [Password] = @NewPassword WHERE [Id] = @UserID;";
                     command.Parameters.AddWithValue("@NewPassword", UserDetails.Password);
