@@ -47,16 +47,33 @@ namespace terrible.Pages.UserPages
             }
 
             //get transaction history
-            //DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
-            //string DbConnection = dbstring.DatabaseString(); //calling the method from the class
-            //SqlConnection conn = new SqlConnection(DbConnection);
-            //conn.Open();
-            //using (SqlCommand command = new SqlCommand())
-            //{
-            //    command.Connection = conn;
-            //    //command.CommandText = @"SELECT ["
-            //}
-            //conn.Close();
+            DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
+            string DbConnection = dbstring.DatabaseString(); //calling the method from the class
+            SqlConnection conn = new SqlConnection(DbConnection);
+            conn.Open();
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.Connection = conn;
+                command.CommandText = @"SELECT * FROM [Transactions] 
+                                        WHERE [SenderID] = @UserID OR [ReceiverID] = @UserID";
+                command.Parameters.AddWithValue("@UserID", UserID);
+
+                SqlDataReader reader = command.ExecuteReader();
+                TransactionHistory = new List<Transaction>();
+
+                while (reader.Read())
+                {
+                    Transaction transaction = new Transaction();
+                    transaction.TransactionID = reader.GetInt32(0);
+                    transaction.SenderID = reader.GetInt32(1);
+                    transaction.ReceiverID = reader.GetInt32(2);
+                    transaction.TransferAmount = reader.GetDecimal(3);
+                    transaction.TransactionTime = reader.GetDateTime(4);
+                    TransactionHistory.Add(transaction);
+                }
+                reader.Close();
+            }
+            conn.Close();
             return Page();
         }
 
