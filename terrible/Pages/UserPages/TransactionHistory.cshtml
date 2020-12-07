@@ -1,0 +1,40 @@
+﻿@page
+@model terrible.Pages.UserPages.TransactionHistoryModel
+@{
+}
+<h1>Transaction History</h1>
+<div class="row">
+    <!--form here-->
+    <div class="col-md-12">
+        <div>
+            <table class="table table-active">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionHistory[0].SenderID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionHistory[0].ReceiverID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionHistory[0].TransferAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionHistory[0].TransactionTime)
+                        </th>
+                    </tr>
+                </thead>
+                @for (int i = 0; i < Model.TransactionHistory.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.TransactionHistory[i].SenderID</td>
+                        <td>@Model.TransactionHistory[i].ReceiverID</td>
+                        <td>@Model.TransactionHistory[i].TransferAmount</td>
+                        <td>@Model.TransactionHistory[i].TransactionTime</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+</div>

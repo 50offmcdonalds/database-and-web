@@ -16,7 +16,7 @@ namespace terrible.Pages.UserPages
         [BindProperty]
         public Transaction Transaction { get; set; }
 
-        public List<Transaction> TransactionHistory { get; set; }
+        //public List<Transaction> TransactionHistory { get; set; }
 
         public string Message { get; set; }
 
@@ -46,34 +46,6 @@ namespace terrible.Pages.UserPages
                 return RedirectToPage("/Login/Login");
             }
 
-            //get transaction history
-            DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
-            string DbConnection = dbstring.DatabaseString(); //calling the method from the class
-            SqlConnection conn = new SqlConnection(DbConnection);
-            conn.Open();
-            using (SqlCommand command = new SqlCommand())
-            {
-                command.Connection = conn;
-                command.CommandText = @"SELECT * FROM [Transactions] 
-                                        WHERE [SenderID] = @UserID OR [ReceiverID] = @UserID";
-                command.Parameters.AddWithValue("@UserID", UserID);
-
-                SqlDataReader reader = command.ExecuteReader();
-                TransactionHistory = new List<Transaction>();
-
-                while (reader.Read())
-                {
-                    Transaction transaction = new Transaction();
-                    transaction.TransactionID = reader.GetInt32(0);
-                    transaction.SenderID = reader.GetInt32(1);
-                    transaction.ReceiverID = reader.GetInt32(2);
-                    transaction.TransferAmount = reader.GetDecimal(3);
-                    transaction.TransactionTime = reader.GetDateTime(4);
-                    TransactionHistory.Add(transaction);
-                }
-                reader.Close();
-            }
-            conn.Close();
             return Page();
         }
 
