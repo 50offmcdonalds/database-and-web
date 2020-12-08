@@ -9,10 +9,15 @@
 <h2>Your balance is £@Model.Balance</h2>
 
 <p>
+    @if (@Model.Admin)
+    {
+        <a asp-page="/AdminPages/AdminIndex" class="btn btn-danger">Admin Panel</a>
+    }
+</p>
+<p>
     <a asp-page="Transaction" class="btn btn-dark">Transaction</a>
     <a asp-page="Deposit" class="btn btn-dark">Deposit</a>
     <a asp-page="Update" class="btn btn-dark">Update Details</a>
     <a asp-page="TransactionHistory" class="btn btn-dark">Transaction History</a>
-
     <a asp-page="/LogoutPage/Logout" class="btn btn-dark">Logout</a>
 </p>
