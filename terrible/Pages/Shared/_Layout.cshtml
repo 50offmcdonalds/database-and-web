@@ -24,6 +24,31 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @if (string.IsNullOrWhiteSpace(@Model.Username))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Login/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-dark" asp-area="" asp-page="/Users/Index">Sign Up</a>
+                            </li>
+                        }
+                        @if (@Model.Admin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminPages/AdminIndex">Admin Panel</a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(@Model.Username))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/UserPages/UserIndex">User Page</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark btn btn-warning" asp-area="" asp-page="/LogoutPage/Logout">Sign Out</a>
+                            </li>
+                        }
+
                     </ul>
                 </div>
             </div>

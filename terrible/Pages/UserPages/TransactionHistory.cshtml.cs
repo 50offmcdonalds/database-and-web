@@ -40,8 +40,11 @@ namespace terrible.Pages.UserPages
         public decimal Balance;
         public const string SessionKeyName4 = "balance";
 
+        public bool Admin;
+        public const string SessionKeyName5 = "admin";
+
         public string SessionID;
-        public const string SessionKeyName5 = "sessionID";
+        public const string SessionKeyName6 = "sessionID";
         public IActionResult OnGet()
         {
             
@@ -49,7 +52,8 @@ namespace terrible.Pages.UserPages
             Username = HttpContext.Session.GetString(SessionKeyName2);
             Name = HttpContext.Session.GetString(SessionKeyName3);
             Balance = decimal.Round(Convert.ToDecimal(HttpContext.Session.GetString(SessionKeyName4)), 2);
-            SessionID = HttpContext.Session.GetString(SessionKeyName5);
+            Admin = Convert.ToBoolean(HttpContext.Session.GetString(SessionKeyName5));
+            SessionID = HttpContext.Session.GetString(SessionKeyName6);
             if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(SessionID))
             {
                 return RedirectToPage("/Login/Login");

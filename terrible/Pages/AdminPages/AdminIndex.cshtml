@@ -8,6 +8,8 @@
 <h2>Welcome, @Model.Name</h2>
 <p><a asp-page="/UserPages/UserIndex">Go to userpage</a></p>
 <p>
-    <a asp-page="UserData/View" class="btn btn-dark">View/Edit Data</a>
+    <a asp-page="UserData/View" class="btn btn-dark">User Data</a>
+    <a asp-page="TransactionData/View" class="btn btn-dark">Transaction Data</a>
+    <a asp-page="#" class="btn btn-dark">Statistics</a>
     <a asp-page="/LogoutPage/Logout" class="btn btn-dark">Logout</a>
 </p>

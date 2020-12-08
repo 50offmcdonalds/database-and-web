@@ -16,10 +16,14 @@ namespace terrible.Pages.Users
         [BindProperty]
         public User userAccount { get; set; }
 
+        public bool Admin;
+        public const string SessionKeyName1 = "admin";
+
         public string Username;
         public const string SessionKeyName2 = "username";
         public IActionResult OnGet()
         {
+            Admin = Convert.ToBoolean(HttpContext.Session.GetString(SessionKeyName1));
             Username = HttpContext.Session.GetString(SessionKeyName2);
             if (string.IsNullOrEmpty(Username))
             {
@@ -37,10 +41,8 @@ namespace terrible.Pages.Users
             using (SqlCommand command = new SqlCommand())
             {
                 command.Connection = conn;
-                command.CommandText = @"INSERT INTO [User] ([Name], [Username], [Password], [Balance]) VALUES (@Name, @Username, @Password, @Balance)";
-
-
-                //command.Parameters.AddWithValue("@UID", userAccounts.Id);
+                command.CommandText = @"INSERT INTO [User] ([Name], [Username], [Password], [Balance]) 
+                                        VALUES (@Name, @Username, @Password, @Balance)";
                 command.Parameters.AddWithValue("@Name", userAccount.Name);
                 command.Parameters.AddWithValue("@Username", userAccount.Username);
                 command.Parameters.AddWithValue("@Password", userAccount.Password);

@@ -1,0 +1,43 @@
+﻿@page
+@model terrible.Pages.AdminPages.TransactionViewModel
+@{
+}
+
+<h2>View User Data</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <table class="table table-active">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionList[0].TransactionID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionList[0].SenderID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionList[0].ReceiverID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionList[0].TransferAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TransactionList[0].TransactionTime)
+                        </th>
+                    </tr>
+                </thead>
+                @for (int i = 0; i < Model.TransactionList.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.TransactionList[i].TransactionID</td>
+                        <td>@Model.TransactionList[i].SenderID</td>
+                        <td>@Model.TransactionList[i].ReceiverID</td>
+                        <td>@Model.TransactionList[i].TransferAmount</td>
+                        <td>@Model.TransactionList[i].TransactionTime</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

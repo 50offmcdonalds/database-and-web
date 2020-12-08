@@ -11,6 +11,9 @@ namespace terrible.Pages
 {
     public class IndexModel : PageModel
     {
+        public bool Admin;
+        public const string SessionKeyName1 = "admin";
+
         public string Username;
         public const string SessionKeyName2 = "username";
 
@@ -23,6 +26,7 @@ namespace terrible.Pages
 
         public IActionResult OnGet()
         {
+            Admin = Convert.ToBoolean(HttpContext.Session.GetString(SessionKeyName1));
             Username = HttpContext.Session.GetString(SessionKeyName2);
             if (string.IsNullOrEmpty(Username))
             {

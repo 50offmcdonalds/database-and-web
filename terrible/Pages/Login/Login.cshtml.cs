@@ -17,12 +17,16 @@ namespace terrible.Pages.Login
         public User UserLogin { get; set; }
         public string Message { get; set; }
 
+        public bool Admin;
+        public const string SessionKeyName1 = "admin";
+
         public string Username;
         public const string SessionKeyName2 = "username";
 
         public string SessionID;
         public IActionResult OnGet()
         {
+            Admin = Convert.ToBoolean(HttpContext.Session.GetString(SessionKeyName1));
             Username = HttpContext.Session.GetString(SessionKeyName2);
             if (string.IsNullOrEmpty(Username))
             {

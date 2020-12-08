@@ -55,7 +55,8 @@ namespace terrible.Pages.AdminPages.UserData
             using (SqlCommand command = new SqlCommand())
             {
                 command.Connection = conn;
-                command.CommandText = @"UPDATE [User] SET [Name] = @Name, [Username] = @Username, [Password] = @Password, [Admin] = @Admin, [Balance] = @Balance
+                command.CommandText = @"UPDATE [User] SET [Name] = @Name, [Username] = @Username, 
+                                        [Password] = @Password, [Admin] = @Admin, [Balance] = @Balance
                                         WHERE [Id] = @UserID";
                 command.Parameters.AddWithValue("@UserID", UserRec.Id);
                 command.Parameters.AddWithValue("@Name", UserRec.Name);
