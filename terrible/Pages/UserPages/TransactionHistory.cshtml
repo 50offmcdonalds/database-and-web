@@ -4,7 +4,24 @@
 }
 <h1>Transaction History</h1>
 <div class="row">
-    <!--form here-->
+    <div class="col-md-12">
+        <form method="POST">
+            <div style="float: left; padding-right: 2%;" class="form-group">
+                <label>Show payments received</label>
+                <input type="checkbox" asp-for="showTransferIn" checked class="form-control form-check" />
+            </div>
+            <div style="float: left; padding-right: 2%;" class="form-group">
+                <label>Show payments made</label>
+                <input type="checkbox" asp-for="showTransferOut" checked class="form-control form-check" />
+            </div>
+            <div style="float: left; padding-right: 2%;" class="form-group">
+                <input type="submit" value="Filter" class="btn btn-dark" />
+            </div>
+        </form>
+    </div>
+
+</div>
+<div class="row">
     <div class="col-md-12">
         <div>
             <table class="table table-active">
@@ -29,7 +46,7 @@
                     <tr>
                         <td>@Model.TransactionHistory[i].SenderID</td>
                         <td>@Model.TransactionHistory[i].ReceiverID</td>
-                        <td>@Model.TransactionHistory[i].TransferAmount</td>
+                        <td>£@Model.TransactionHistory[i].TransferAmount</td>
                         <td>@Model.TransactionHistory[i].TransactionTime</td>
                     </tr>
                 }

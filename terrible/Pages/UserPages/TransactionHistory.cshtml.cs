@@ -16,7 +16,15 @@ namespace terrible.Pages.UserPages
         [BindProperty]
         public Transaction Transaction { get; set; }
 
+        [BindProperty]
+        public bool showTransferIn { get; set; }
+
+        [BindProperty]
+        public bool showTransferOut { get; set; }
+
         public List<Transaction> TransactionHistory { get; set; }
+
+
 
         public string Message { get; set; }
 
@@ -36,6 +44,7 @@ namespace terrible.Pages.UserPages
         public const string SessionKeyName5 = "sessionID";
         public IActionResult OnGet()
         {
+            
             UserID = HttpContext.Session.GetInt32(SessionKeyName1);
             Username = HttpContext.Session.GetString(SessionKeyName2);
             Name = HttpContext.Session.GetString(SessionKeyName3);
@@ -57,6 +66,59 @@ namespace terrible.Pages.UserPages
                 command.CommandText = @"SELECT * FROM [Transactions] 
                                         WHERE [SenderID] = @UserID OR [ReceiverID] = @UserID";
                 command.Parameters.AddWithValue("@UserID", UserID);
+
+                SqlDataReader reader = command.ExecuteReader();
+                TransactionHistory = new List<Transaction>();
+
+                while (reader.Read())
+                {
+                    Transaction transaction = new Transaction();
+                    transaction.TransactionID = reader.GetInt32(0);
+                    transaction.SenderID = reader.GetInt32(1);
+                    transaction.ReceiverID = reader.GetInt32(2);
+                    transaction.TransferAmount = decimal.Round(reader.GetDecimal(3),2);
+                    transaction.TransactionTime = reader.GetDateTime(4);
+                    TransactionHistory.Add(transaction);
+                }
+                reader.Close();
+            }
+            conn.Close();
+            return Page();
+        }
+        public int getID()
+        {
+            int ID = HttpContext.Session.GetInt32(SessionKeyName1).Value;
+            return ID;
+        }
+        public IActionResult OnPost()
+        {
+            Console.WriteLine(showTransferIn);
+            Console.WriteLine(showTransferOut);
+            DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
+            string DbConnection = dbstring.DatabaseString(); //calling the method from the class
+            SqlConnection conn = new SqlConnection(DbConnection);
+            conn.Open();
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.Connection = conn;
+                //command.CommandText = @"SELECT * FROM [Transactions] 
+                //                        WHERE [SenderID] = @UserID OR [ReceiverID] = @UserID";
+                command.CommandText = @"";
+                if (showTransferIn || showTransferOut)
+                {
+                    command.CommandText += "SELECT * FROM [Transactions]";
+                }
+                if (showTransferIn)
+                {
+                    command.CommandText += "WHERE [ReceiverID] = @UserID";
+                    if (showTransferOut) { command.CommandText += "OR [SenderID] = @UserID"; }
+                }
+                else if (showTransferOut)
+                {
+                    command.CommandText += "WHERE [SenderID] = @UserID";
+                }
+
+                command.Parameters.AddWithValue("@UserID", getID());
 
                 SqlDataReader reader = command.ExecuteReader();
                 TransactionHistory = new List<Transaction>();
