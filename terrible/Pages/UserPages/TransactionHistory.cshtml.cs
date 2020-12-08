@@ -13,8 +13,8 @@ namespace terrible.Pages.UserPages
 {
     public class TransactionHistoryModel : PageModel
     {
-        [BindProperty]
-        public Transaction Transaction { get; set; }
+        //[BindProperty]
+        //public Transaction Transaction { get; set; }
 
         [BindProperty]
         public bool showTransferIn { get; set; }
