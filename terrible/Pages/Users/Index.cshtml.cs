@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using terrible.Models;
@@ -14,8 +15,17 @@ namespace terrible.Pages.Users
     {
         [BindProperty]
         public User userAccount { get; set; }
-        public void OnGet()
+
+        public string Username;
+        public const string SessionKeyName2 = "username";
+        public IActionResult OnGet()
         {
+            Username = HttpContext.Session.GetString(SessionKeyName2);
+            if (string.IsNullOrEmpty(Username))
+            {
+                return Page();
+            }
+            return RedirectToPage("/UserPages/Userindex");
         }
         public IActionResult OnPost()
         {
@@ -45,7 +55,7 @@ namespace terrible.Pages.Users
                 command.ExecuteNonQuery();
             }
             conn.Close();
-                return RedirectToPage("/Index");
+            return RedirectToPage("/Index");
         }
     }
 }

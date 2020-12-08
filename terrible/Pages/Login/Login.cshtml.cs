@@ -16,9 +16,19 @@ namespace terrible.Pages.Login
         [BindProperty]
         public User UserLogin { get; set; }
         public string Message { get; set; }
+
+        public string Username;
+        public const string SessionKeyName2 = "username";
+
         public string SessionID;
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            Username = HttpContext.Session.GetString(SessionKeyName2);
+            if (string.IsNullOrEmpty(Username))
+            {
+                return Page();
+            }
+            return RedirectToPage("/UserPages/Userindex");
         }
         public IActionResult OnPost()
         {
