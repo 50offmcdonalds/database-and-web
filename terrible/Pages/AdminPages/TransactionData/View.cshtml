@@ -3,7 +3,25 @@
 @{
 }
 
-<h2>View User Data</h2>
+<h2>View Transaction Data</h2>
+<div class="row">
+    <p>Sort by:</p>
+    <form method="post">
+        <select type="text" asp-for="sortBy" style="width: 160px">
+            @foreach (var item in Model.sortableItems)
+            {
+                <option>@item</option>
+            }
+        </select>
+        <select type="text" asp-for="sortDirection" style="width: 120px">
+            <option>Ascending</option>
+            <option>Descending</option>
+        </select>
+        <div class="form-group">
+            <input type="submit" value="Sort" class="btn btn-dark" />
+        </div>
+    </form>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div>

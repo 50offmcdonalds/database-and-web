@@ -18,7 +18,7 @@ namespace terrible.Pages.UserPages
 
         //public List<Transaction> TransactionHistory { get; set; }
 
-        public string Message { get; set; }
+        public string Message;
 
         public int? UserID;
         public const string SessionKeyName1 = "userID";

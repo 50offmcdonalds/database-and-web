@@ -13,6 +13,13 @@ namespace terrible.Pages.AdminPages
 {
     public class TransactionViewModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public string sortBy { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string sortDirection { get; set; }
+
+        public List<string> sortableItems { get; set; } = new List<string> { "TransactionID", "SenderID", "ReceiverID", "Amount", "Date" };
         public List<Transaction> TransactionList { get; set; }
 
         public int? UserID;
@@ -76,6 +83,41 @@ namespace terrible.Pages.AdminPages
             }
             conn.Close();
 
+            return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            Console.WriteLine(sortBy);
+            Console.WriteLine(sortDirection);
+            DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
+            string DbConnection = dbstring.DatabaseString(); //calling the method from the class
+            SqlConnection conn = new SqlConnection(DbConnection);
+            conn.Open();
+            using (SqlCommand command = new SqlCommand())
+            {
+                command.Connection = conn;
+                command.CommandText = @"SELECT * FROM [Transactions] ORDER BY 
+                                        CASE WHEN @SortDirection = 'Ascending' THEN [" + sortBy + "] ELSE 0 END ASC, " +
+                                        "CASE WHEN @SortDirection = 'Descending' THEN [" + sortBy + "] ELSE 0 END DESC";
+                command.Parameters.AddWithValue("@SortDirection", sortDirection);
+                Console.WriteLine(command.CommandText);
+                TransactionList = new List<Transaction>();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Transaction transaction = new Transaction();
+                    transaction.TransactionID = reader.GetInt32(0);
+                    transaction.SenderID = reader.GetInt32(1);
+                    transaction.ReceiverID = reader.GetInt32(2);
+                    transaction.TransferAmount = reader.GetDecimal(3);
+                    transaction.TransactionTime = reader.GetDateTime(4);
+
+                    TransactionList.Add(transaction);
+                }
+                reader.Close();
+            }
+            conn.Close();
             return Page();
         }
     }
