@@ -48,7 +48,8 @@ namespace terrible.Pages.Login
             using (SqlCommand command = new SqlCommand())
             {
                 command.Connection = conn;
-                command.CommandText = @"SELECT [Id], [Name], [Username], [Password], [Admin], [Balance] FROM [User] WHERE [Username] = @Username AND [Password] = @Password";
+                command.CommandText = @"SELECT [Id], [Name], [Username], [Password], [Admin], [Balance] FROM [User] 
+                                        WHERE [Username] = @Username AND [Password] = @Password";
 
                 command.Parameters.AddWithValue("@Username", UserLogin.Username);
                 command.Parameters.AddWithValue("@Password", UserLogin.Password);
