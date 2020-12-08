@@ -66,6 +66,7 @@ namespace terrible.Pages.Login
                 HttpContext.Session.SetInt32("userID", UserLogin.Id);
                 HttpContext.Session.SetString("username", UserLogin.Username);
                 HttpContext.Session.SetString("name", UserLogin.Name);
+                HttpContext.Session.SetString("admin", UserLogin.Admin.ToString());
                 HttpContext.Session.SetString("balance", UserLogin.Balance.ToString());
                 if (UserLogin.Admin == true)
                 {

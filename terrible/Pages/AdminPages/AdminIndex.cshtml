@@ -6,6 +6,8 @@
 <h1>Admin Panel</h1>
 <br>
 <h2>Welcome, @Model.Name</h2>
-<h2>Your balance is £@Model.Balance</h2>
-
-<p><a asp-page="/LogoutPage/Logout">Logout</a></p>
+<p><a asp-page="/UserPages/UserIndex">Go to userpage</a></p>
+<p>
+    <a asp-page="View" class="btn btn-dark">View/Edit Data</a>
+    <a asp-page="/LogoutPage/Logout" class="btn btn-dark">Logout</a>
+</p>
