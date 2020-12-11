@@ -115,7 +115,7 @@ namespace terrible.Pages.UserPages
                 if (showTransferIn)
                 {
                     command.CommandText += "WHERE [ReceiverID] = @UserID";
-                    if (showTransferOut) { command.CommandText += "OR [SenderID] = @UserID"; }
+                    if (showTransferOut) { command.CommandText += " OR [SenderID] = @UserID"; }
                 }
                 else if (showTransferOut)
                 {

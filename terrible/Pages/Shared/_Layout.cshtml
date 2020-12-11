@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - terrible</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/site.js"></script>
 </head>
 <body>
     <header>
@@ -35,20 +36,34 @@
                         }
                         @if (@Model.Admin)
                         {
-                            <li class="nav-item">
+                            <li class="nav-item" onmouseover="dropdown('adminDrop')" onmouseout="dropdown('adminDrop')">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/AdminPages/AdminIndex">Admin Panel</a>
+                                <div id="adminDrop" class="dropContent">
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/AdminPages/UserData/View>User Data</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/AdminPages/TransactionData/View>Transaction Data</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/AdminPages/Stats>Statistics</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                
                             </li>
                         }
                         @if (!string.IsNullOrWhiteSpace(@Model.Username))
                         {
-                            <li class="nav-item">
+                            <li class="nav-item" onmouseover="dropdown('userDrop')" onmouseout="dropdown('userDrop')">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/UserPages/UserIndex">User Page</a>
+                                <div id="userDrop" class="dropContent">
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/UserPages/Transaction>Make Transaction</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/UserPages/Deposit>Make Deposit</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/UserPages/TransactionHistory>View Transaction History</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page=/UserPages/Update>Update Information</a>
+                                </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark btn btn-warning" asp-area="" asp-page="/LogoutPage/Logout">Sign Out</a>
                             </li>
                         }
-                        
+
                     </ul>
                 </div>
             </div>
