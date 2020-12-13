@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MigraDocCore.DocumentObjectModel;
+using MigraDocCore.DocumentObjectModel.Tables;
+using MigraDocCore.Rendering;
 using terrible.Models;
 using terrible.Pages.DatabaseConnection;
 
@@ -32,7 +36,7 @@ namespace terrible.Pages.AdminPages
 
         public string SessionID;
         public const string SessionKeyName6 = "sessionID";
-        public IActionResult OnGet()
+        public IActionResult OnGet(string pdf)
         {
 
             UserID = HttpContext.Session.GetInt32(SessionKeyName1);
@@ -76,6 +80,77 @@ namespace terrible.Pages.AdminPages
                 reader.Close();
             }
             conn.Close();
+
+            if (pdf == "1")
+            {
+                Document doc = new Document();
+                Section sec = doc.AddSection();
+                Paragraph para = sec.AddParagraph();
+
+                para.Format.Font.Name = "Arial";
+                para.Format.Font.Size = 14;
+                para.Format.Font.Color = Color.FromCmyk(0, 0, 0, 100);
+                para.AddFormattedText("List of Users", TextFormat.Bold);
+                para.Format.SpaceAfter = "1.0cm";
+
+                Table tab = new Table();
+                tab.Borders.Width = 0.75;
+                tab.TopPadding = 5;
+                tab.BottomPadding = 5;
+
+                Column col = tab.AddColumn(Unit.FromCentimeter(1.5));
+                col.Format.Alignment = ParagraphAlignment.Justify;
+                tab.AddColumn(Unit.FromCentimeter(3.5));
+                tab.AddColumn(Unit.FromCentimeter(3.5));
+                tab.AddColumn(Unit.FromCentimeter(3.5));
+                tab.AddColumn(Unit.FromCentimeter(1.5));
+                tab.AddColumn(Unit.FromCentimeter(4));
+                Row row = tab.AddRow();
+                row.Shading.Color = Colors.NavajoWhite;
+
+                Cell cell = new Cell();
+                cell = row.Cells[0];
+                cell.AddParagraph("ID");
+                cell = row.Cells[1];
+                cell.AddParagraph("Name");
+                cell = row.Cells[2];
+                cell.AddParagraph("Username");
+                cell = row.Cells[3];
+                cell.AddParagraph("Password");
+                cell = row.Cells[4];
+                cell.AddParagraph("Admin");
+                cell = row.Cells[5];
+                cell.AddParagraph("Balance");
+
+                for (int i=0; i<UserList.Count; i++)
+                {
+                    row = tab.AddRow();
+                    cell = row.Cells[0];
+                    cell.AddParagraph(Convert.ToString(UserList[i].Id));
+                    cell = row.Cells[1];
+                    cell.AddParagraph(UserList[i].Name);
+                    cell = row.Cells[2];
+                    cell.AddParagraph(UserList[i].Username);
+                    cell = row.Cells[3];
+                    cell.AddParagraph(UserList[i].Password);
+                    cell = row.Cells[4];
+                    cell.AddParagraph(Convert.ToString(UserList[i].Admin));
+                    cell = row.Cells[5];
+                    cell.AddParagraph(Convert.ToString(UserList[i].Balance));
+                }
+
+                tab.SetEdge(0, 0, 6, (UserList.Count + 1), Edge.Box, BorderStyle.Single, 1.5, Colors.Black);
+                sec.Add(tab);
+
+                PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer();
+                pdfRenderer.Document = doc;
+                pdfRenderer.RenderDocument();
+
+                MemoryStream stream = new MemoryStream();
+                pdfRenderer.PdfDocument.Save(stream);
+                Response.Headers.Add("content-disposition", new[] { "inline; filename = ListOfUsers.pdf" });
+                return File(stream, "application/pdf");
+            }
 
             return Page();
         }
