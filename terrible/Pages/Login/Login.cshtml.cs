@@ -36,6 +36,11 @@ namespace terrible.Pages.Login
         }
         public IActionResult OnPost()
         {
+            if (string.IsNullOrWhiteSpace(UserLogin.Username) || string.IsNullOrWhiteSpace(UserLogin.Password))
+            {
+                Message = "Please enter a username and password";
+                return Page();
+            }
             DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
             Console.WriteLine(DbConnection);
@@ -50,6 +55,8 @@ namespace terrible.Pages.Login
                 command.Connection = conn;
                 command.CommandText = @"SELECT [Id], [Name], [Username], [Password], [Admin], [Balance] FROM [User] 
                                         WHERE [Username] = @Username AND [Password] = @Password";
+
+                
 
                 command.Parameters.AddWithValue("@Username", UserLogin.Username);
                 command.Parameters.AddWithValue("@Password", UserLogin.Password);

@@ -60,6 +60,9 @@ namespace terrible.Pages.UserPages
             }
 
             //get transaction history
+            showTransferIn = true;
+            showTransferOut = true;
+
             DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
             SqlConnection conn = new SqlConnection(DbConnection);
@@ -120,6 +123,10 @@ namespace terrible.Pages.UserPages
                 else if (showTransferOut)
                 {
                     command.CommandText += "WHERE [SenderID] = @UserID";
+                }
+                else // !showTransferIn && !showTransferOut
+                {
+                    return Page();
                 }
 
                 command.Parameters.AddWithValue("@UserID", getID());

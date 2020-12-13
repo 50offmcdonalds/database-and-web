@@ -65,11 +65,21 @@ namespace terrible.Pages.UserPages
         }
         public IActionResult OnPost()
         {
+            Console.WriteLine(Transaction.TransferAmount);
+            Console.WriteLine(Transaction.ReceiverID);
+            Console.WriteLine(Transaction.SenderID);
             if (getBalance() - Transaction.TransferAmount < 0)
             {
                 Message = "Insufficient funds to make transfer";
                 return Page();
             }
+            if (Transaction.ReceiverID == 0 || Transaction.TransferAmount == 0)
+            {
+                Message = "Please enter an ID and amount";
+                return Page();
+            }
+
+            int rowsAffected;
             Transaction.SenderID = getSenderID();
             DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
@@ -80,25 +90,42 @@ namespace terrible.Pages.UserPages
             {
                 
                 command.Connection = conn;
-                command.CommandText = @"UPDATE [User] SET [Balance] = [Balance] + @NewBalance WHERE [Id] = @TransferID;
-                                        UPDATE [User] SET [Balance] = [Balance] - @NewBalance WHERE [Id] = @SenderID;
-                                        INSERT INTO[Transactions] ([SenderID], [ReceiverID], [Amount], [Date]) VALUES(@SenderID, @TransferID, @NewBalance, @Date)";
+                command.CommandText = @"IF EXISTS (SELECT [Id] FROM [User] WHERE [Id] = @TransferID)
+                                        BEGIN
+                                            UPDATE [User] SET [Balance] = [Balance] + @NewBalance WHERE [Id] = @TransferID;
+                                            UPDATE [User] SET [Balance] = [Balance] - @NewBalance WHERE [Id] = @SenderID;
+                                            INSERT INTO[Transactions] ([SenderID], [ReceiverID], [Amount], [Date]) VALUES(@SenderID, @TransferID, @NewBalance, @Date)
+                                        END";
 
                 command.Parameters.AddWithValue("@NewBalance", Transaction.TransferAmount);
                 command.Parameters.AddWithValue("@TransferID", Transaction.ReceiverID);
                 command.Parameters.AddWithValue("@SenderID", Transaction.SenderID);
                 command.Parameters.AddWithValue("@Date", DateTime.Now);
 
+                if (string.IsNullOrWhiteSpace(Convert.ToString(Transaction.ReceiverID)) || Transaction.ReceiverID == 0)
+                {
+                    Message = "Receiver account does not exist";
+                    return Page();
+                }
+
                 Console.WriteLine(Transaction.TransferAmount);
                 Console.WriteLine(Transaction.ReceiverID);
                 Console.WriteLine(Transaction.SenderID);
 
-                command.ExecuteNonQuery();
-
-                //refresh balance of logged-in account
-                HttpContext.Session.SetString("balance", (getBalance() - Transaction.TransferAmount).ToString());
+                rowsAffected = command.ExecuteNonQuery();
+                Console.WriteLine("Rows " + rowsAffected);
             }
             conn.Close();
+            if (rowsAffected == -1)
+            {
+                Message = "Receiver account does not exist";
+                return Page();
+            }
+            else
+            {
+                //refresh balance of logged in account
+                HttpContext.Session.SetString("balance", (getBalance() - Transaction.TransferAmount).ToString());
+            }
             return RedirectToPage("UserIndex");
         }
     }

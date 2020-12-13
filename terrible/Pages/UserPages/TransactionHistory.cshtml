@@ -41,14 +41,17 @@
                         </th>
                     </tr>
                 </thead>
-                @for (int i = 0; i < Model.TransactionHistory.Count; i++)
+                @if (Model.showTransferIn || Model.showTransferOut)
                 {
+                    for (int i = 0; i < Model.TransactionHistory.Count; i++)
+                    {
                     <tr>
                         <td>@Model.TransactionHistory[i].SenderID</td>
                         <td>@Model.TransactionHistory[i].ReceiverID</td>
                         <td>£@Model.TransactionHistory[i].TransferAmount</td>
                         <td>@Model.TransactionHistory[i].TransactionTime</td>
                     </tr>
+                    }
                 }
             </table>
         </div>

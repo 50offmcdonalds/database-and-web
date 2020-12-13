@@ -16,6 +16,8 @@ namespace terrible.Pages.Users
         [BindProperty]
         public User userAccount { get; set; }
 
+        public string Message;
+
         public bool Admin;
         public const string SessionKeyName1 = "admin";
 
@@ -34,6 +36,12 @@ namespace terrible.Pages.Users
         public IActionResult OnPost()
         {
             //string DbConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ProjectDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            if (string.IsNullOrWhiteSpace(userAccount.Name) || string.IsNullOrWhiteSpace(userAccount.Username) || string.IsNullOrWhiteSpace(userAccount.Password) || string.IsNullOrWhiteSpace(Convert.ToString(userAccount.Balance)))
+            {
+                Message = "One or more fields were not filled in";
+                return Page();
+            }
+            
             DatabaseConnect dbstring = new DatabaseConnect(); //creating an object from the class
             string DbConnection = dbstring.DatabaseString(); //calling the method from the class
             SqlConnection conn = new SqlConnection(DbConnection);
