@@ -92,10 +92,19 @@ namespace terrible.Pages.UserPages
 
         public IActionResult OnPost()
         {
-            var file = Path.Combine(_env.WebRootPath, "imageUpload", userFile.FileName);
+            //check for duplicate filenames
+            string filename = Path.GetFileName(userFile.FileName);
+            var filepath = Path.Combine(_env.WebRootPath, "imageUpload", filename);
+            int value = 2;
+            while (System.IO.File.Exists(filepath))
+            {
+                filename = "(" + value + ")" + userFile.FileName;
+                filepath = Path.Combine(_env.WebRootPath, "imageUpload", filename);
+                value += 1;
+            }
 
-            Console.WriteLine(userFile.FileName);
-
+            Console.WriteLine(filename);
+            var file = Path.Combine(_env.WebRootPath, "imageUpload", filename);
             using (var FStream = new FileStream(file, FileMode.Create))
             {
                 userFile.CopyTo(FStream);
@@ -111,7 +120,7 @@ namespace terrible.Pages.UserPages
                 command.Connection = conn;
                 command.CommandText = @"INSERT INTO [UserFiles] (UserID, Filename) VALUES (@UserID, @Filename)";
                 command.Parameters.AddWithValue("@UserID", HttpContext.Session.GetInt32(SessionKeyName1));
-                command.Parameters.AddWithValue("@Filename", userFile.FileName);
+                command.Parameters.AddWithValue("@Filename", filename);
                 command.ExecuteNonQuery();
             }
             conn.Close();
